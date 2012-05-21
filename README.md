@@ -51,20 +51,20 @@
     # without shared, a new instance will be created each time
     container.register(DogService).depends(Lucy)
 
-    # could also container['FoOSeRViCE']
-    obj = container.FooService
+    # could also container['FoOSeRViCE']()
+    obj = container.FooService()
     obj.action1()
     obj.action2()
 
     print('+-------------+')
 
-    # could also container['fooservice']
-    obj2 = container.FooService
+    # could also container['fooservice']()
+    obj2 = container.FooService()
     obj2.action1()
 
 
     print('+-------------+')
 
-    obj3 = container.FooService
+    obj3 = container.FooService()
     obj3.action1()
 ```

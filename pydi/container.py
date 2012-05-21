@@ -38,12 +38,12 @@ class Container(dict):
 
     def __getitem__(self, key):
         try:
-            return dict.__getitem__(self, key.lower())()
+            return dict.__getitem__(self, key.lower())
         except KeyError:
             raise KeyError(key)
 
     def __getattr__(self, key):
         try:
-             return dict.__getitem__(self, key.lower())()
+             return dict.__getitem__(self, key.lower())
         except KeyError:
             raise AttributeError(key)
