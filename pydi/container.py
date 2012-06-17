@@ -1,5 +1,5 @@
 class Component(object):
-    
+
     def __init__(self, cls, **kwargs):
         self.cls = cls
         self.kwargs = kwargs
@@ -10,18 +10,20 @@ class Component(object):
 
     def shared(self):
         self._shared = True
-    
+
     def depends(self, cls, **kwargs):
         self.dependencies.append(Component(cls, **kwargs))
         return self
-    
+
     def __call__(self, **kwargs):
         if self._shared and self._instance:
             return self._instance
-            
+
         args = map(lambda x: x(**x.kwargs), self.dependencies)
-        obj = self.cls(*args, **kwargs)
-        
+
+        target = self.cls
+        obj = target(*args, **kwargs) if callable(target) else target
+
         if self._shared:
             self._instance = obj
 
@@ -33,7 +35,7 @@ class Container(dict):
         key = cls.__name__.lower()
         component = Component(cls)
         self[key] = component
-        
+
         return component
 
     def __getitem__(self, key):
