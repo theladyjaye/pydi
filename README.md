@@ -1,4 +1,4 @@
-# Little Dependency Injection Container
+# Simple Little Dependency Injection Container
 
 ## Usage:
 
@@ -13,11 +13,11 @@
             self.dep.action()
 
     class FooService(object):
-        
+
         def __init__(self, dep1, dep2):
             self.dep1 = dep1
             self.dep2 = dep2
-        
+
         def action1(self):
             self.dep1.action()
 
@@ -25,12 +25,12 @@
             self.dep2.action()
 
     class Bar(object):
-        
+
         def action(self):
             print('bar')
 
     class Baz(object):
-        
+
         def __init__(self, option):
             self.option = option
 
@@ -38,7 +38,7 @@
             print('baz!!!', self.option)
 
     class Lucy(object):
-        
+
         def action(self):
             print("I'm a dog!")
 
