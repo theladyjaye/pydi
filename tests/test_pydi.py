@@ -5,8 +5,8 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import unittest
 from pydi import Container
-import data
-import services
+from tests import data
+from tests import services
 
 
 class PydiSuite(unittest.TestCase):

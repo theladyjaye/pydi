@@ -1,5 +1,7 @@
 # Simple Little Dependency Injection Container
 
+[![Build Status](https://secure.travis-ci.org/aventurella/pydi.png?branch=master)](http://travis-ci.org/aventurella/pydi)
+
 ## Usage:
 
 ```python
