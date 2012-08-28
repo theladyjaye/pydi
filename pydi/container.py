@@ -11,7 +11,7 @@ class Component(object):
     def shared(self):
         self._shared = True
 
-    def depends(self, cls, **kwargs):
+    def depends(self, cls=None, **kwargs):
         self.dependencies.append(Component(cls, **kwargs))
         return self
 
@@ -28,6 +28,7 @@ class Component(object):
             self._instance = obj
 
         return obj
+
 
 class Container(dict):
 
@@ -46,6 +47,6 @@ class Container(dict):
 
     def __getattr__(self, key):
         try:
-             return dict.__getitem__(self, key.lower())
+            return dict.__getitem__(self, key.lower())
         except KeyError:
             raise AttributeError(key)
