@@ -11,7 +11,7 @@ class Component(object):
     def shared(self):
         self._shared = True
 
-    def depends(self, cls=None, **kwargs):
+    def depends(self, cls, **kwargs):
         self.dependencies.append(Component(cls, **kwargs))
         return self
 
