@@ -1,11 +1,13 @@
 #!/usr/bin/env python
+import os
+import sys
 from setuptools import setup
 
-with open('README.md') as f:
-    readme = f.read()
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    sys.exit()
 
-with open('LICENSE') as f:
-    license = f.read()
+os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
 
 packages = [
     'pydi'
@@ -15,13 +17,13 @@ requires = []
 
 setup(
     name='pydi',
-    version='0.1',
+    version='0.2.1',
     description='Little Dependency Injection Container',
-    long_description=readme,
+    long_description=open('README.md').read(),
     author='Adam Venturella',
     author_email='aventurella@gmail.com',
     url='http://github.com/aventurella/pydi',
-    license=license,
+    license=open('LICENSE').read(),
     packages=packages,
     package_data={'': ['LICENSE']},
     include_package_data=True,
@@ -40,3 +42,5 @@ setup(
     ),
 
 )
+
+del os.environ['PYTHONDONTWRITEBYTECODE']
