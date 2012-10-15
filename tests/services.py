@@ -18,3 +18,15 @@ class BarService(object):
 
     def action2(self):
         return self.dep2.action()
+
+
+class BazService(object):
+    def __init__(self, service):
+        self.service = service
+
+    def action1(self):
+        return self.service.action1()
+
+    def action2(self):
+        return self.service.action2()
+

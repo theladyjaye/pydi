@@ -5,11 +5,34 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import unittest
 from pydi import Container
+from pydi.utils import Resolve
 from tests import data
 from tests import services
 
 
 class PydiSuite(unittest.TestCase):
+
+    def test_resolve(self):
+        c = Container()
+        c.register(services.BarService).depends(data.Foo).depends(data.Bar, value='Ollie')
+        c.register(services.BazService).depends(Resolve(services.BarService))
+
+        obj1 = c.BazService()
+
+        self.assertTrue(isinstance(obj1, services.BazService))
+        self.assertTrue(isinstance(obj1.service, services.BarService))
+        self.assertEqual(obj1.action1(), 'Lucy')
+        self.assertEqual(obj1.action2(), 'Ollie')
+
+    def test_resolve_shared(self):
+        c = Container()
+        c.register(services.BarService).depends(data.Foo).depends(data.Bar, value='Ollie')
+        c.register(services.BazService).depends(Resolve(services.BarService)).shared()
+
+        obj1 = c.BazService()
+        obj2 = c.BazService()
+
+        self.assertEqual(obj1, obj2)
 
     def test_simple(self):
         c = Container()

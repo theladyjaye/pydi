@@ -17,7 +17,7 @@ requires = []
 
 setup(
     name='pydi',
-    version='0.2.1',
+    version='0.3.0',
     description='Little Dependency Injection Container',
     long_description=open('README.md').read(),
     author='Adam Venturella',

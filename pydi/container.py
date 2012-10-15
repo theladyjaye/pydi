@@ -1,9 +1,13 @@
+from pydi.utils import Resolve
+
+
 class Component(object):
 
-    def __init__(self, cls, **kwargs):
+    def __init__(self, cls, container=None, **kwargs):
         self.cls = cls
         self.kwargs = kwargs
         self.dependencies = []
+        self.container = container
 
         self._shared = False
         self._instance = None
@@ -12,6 +16,10 @@ class Component(object):
         self._shared = True
 
     def depends(self, cls, **kwargs):
+
+        if type(cls) == Resolve and cls.container == None:
+            cls.container = self.container
+
         self.dependencies.append(Component(cls, **kwargs))
         return self
 
@@ -34,7 +42,7 @@ class Container(dict):
 
     def register(self, cls):
         key = cls.__name__.lower()
-        component = Component(cls)
+        component = Component(cls, container=self)
         self[key] = component
 
         return component
