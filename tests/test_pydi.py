@@ -71,6 +71,34 @@ class PydiSuite(unittest.TestCase):
 
         self.assertEqual(obj1, obj2)
 
+    def test_shared_difference(self):
+        c = Container()
+        c.register(services.BarService).depends(data.Foo).depends(data.Bar, value='Ollie').shared()
+
+        obj1 = c.BarService()
+        obj2 = c.BarService()
+
+        import threading
+        import time
+
+        def thread_scope1():
+            obj3 = c.BarService()
+            self.assertTrue(obj1 != obj3)
+            time.sleep(1)
+
+        def thread_scope2():
+            obj4 = c.BarService()
+            self.assertTrue(obj1 != obj4)
+            time.sleep(1)
+
+        thread1 = threading.Thread(target=thread_scope1)
+        thread2 = threading.Thread(target=thread_scope2)
+
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+
     def test_other_init(self):
         c = Container()
         c.register(data.Bar).depends('RoboFish')
