@@ -1,5 +1,5 @@
-import threading
 from pydi.utils import Resolve
+from pydi.exceptions import InitializationFailed
 
 
 class Component(object):
@@ -9,7 +9,6 @@ class Component(object):
         self.kwargs = kwargs
         self.dependencies = []
         self.container = container
-        self.thread_storage = None
 
         self._shared = False
         self._instance = None
@@ -26,21 +25,21 @@ class Component(object):
         return self
 
     def __call__(self, **kwargs):
-
-        if self._shared:
-            try:
-                return self.thread_storage.instance
-            except AttributeError:
-                pass
+        if self._shared and self._instance:
+            return self._instance
 
         args = map(lambda x: x(**x.kwargs), self.dependencies)
 
         target = self.cls
-        obj = target(*args, **kwargs) if callable(target) else target
+        try:
+            obj = target(*args, **kwargs) if callable(target) else target
+        except TypeError:
+            raise InitializationFailed(target=target,
+                                       target_args=args,
+                                       target_kwargs=kwargs)
 
         if self._shared:
-            self.thread_storage = threading.local()
-            self.thread_storage.instance = obj
+            self._instance = obj
 
         return obj
 

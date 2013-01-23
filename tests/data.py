@@ -1,3 +1,8 @@
+class Zap(object):
+    def __init__(self):
+        pass
+
+
 class Foo(object):
     def __init__(self):
         self.name = "Lucy"

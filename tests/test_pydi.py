@@ -4,6 +4,7 @@ import sys, os
 sys.path.insert(0, os.path.abspath('..'))
 
 import unittest
+from pydi.exceptions import InitializationFailed
 from pydi import Container
 from pydi.utils import Resolve
 from tests import data
@@ -11,6 +12,15 @@ from tests import services
 
 
 class PydiSuite(unittest.TestCase):
+
+    def test_multiple_error(self):
+        c = Container()
+        c.register(services.BarService)\
+                  .depends(data.Foo)\
+                  .depends(data.Bar, value='Ollie')\
+                  .depends(data.Zap)
+
+        self.assertRaises(InitializationFailed, c.BarService)
 
     def test_resolve(self):
         c = Container()
@@ -71,33 +81,33 @@ class PydiSuite(unittest.TestCase):
 
         self.assertEqual(obj1, obj2)
 
-    def test_shared_difference(self):
-        c = Container()
-        c.register(services.BarService).depends(data.Foo).depends(data.Bar, value='Ollie').shared()
+    # def test_shared_difference(self):
+    #     c = Container()
+    #     c.register(services.BarService).depends(data.Foo).depends(data.Bar, value='Ollie').shared()
 
-        obj1 = c.BarService()
-        obj2 = c.BarService()
+    #     obj1 = c.BarService()
+    #     obj2 = c.BarService()
 
-        import threading
-        import time
+    #     import threading
+    #     import time
 
-        def thread_scope1():
-            obj3 = c.BarService()
-            self.assertTrue(obj1 != obj3)
-            time.sleep(1)
+    #     def thread_scope1():
+    #         obj3 = c.BarService()
+    #         self.assertTrue(obj1 != obj3)
+    #         time.sleep(1)
 
-        def thread_scope2():
-            obj4 = c.BarService()
-            self.assertTrue(obj1 != obj4)
-            time.sleep(1)
+    #     def thread_scope2():
+    #         obj4 = c.BarService()
+    #         self.assertTrue(obj1 != obj4)
+    #         time.sleep(1)
 
-        thread1 = threading.Thread(target=thread_scope1)
-        thread2 = threading.Thread(target=thread_scope2)
+    #     thread1 = threading.Thread(target=thread_scope1)
+    #     thread2 = threading.Thread(target=thread_scope2)
 
-        thread1.start()
-        thread2.start()
-        thread1.join()
-        thread2.join()
+    #     thread1.start()
+    #     thread2.start()
+    #     thread1.join()
+    #     thread2.join()
 
     def test_other_init(self):
         c = Container()
