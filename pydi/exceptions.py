@@ -1,6 +1,3 @@
-import types
-
-
 class PydiError(Exception):
     pass
 
@@ -13,7 +10,7 @@ class InitializationFailed(PydiError):
 
         target_type = type(target)
 
-        if target_type == types.TypeType:
+        if target_type == type:
             self.target_code = target.__init__.__code__
         else:
             self.target_code = target.__code__
