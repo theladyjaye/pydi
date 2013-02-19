@@ -69,6 +69,12 @@
 
     obj3 = container.FooService()
     obj3.action1()
+
+    # New in v0.3.2
+    # you can also register an alternate name if you like:
+    container.register(DogService, 'LucyService').depends(Lucy)
+    container.LucyService()
+
 ```
 
 
