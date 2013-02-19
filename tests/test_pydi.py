@@ -54,6 +54,28 @@ class PydiSuite(unittest.TestCase):
         self.assertTrue(isinstance(obj.dep1, data.Foo))
         self.assertEqual(obj.action(), 'Lucy')
 
+    def test_alternate_name(self):
+        c = Container()
+        c.register(services.FooService, 'banana').depends(data.Foo)
+
+        obj = c.Banana()
+
+        self.assertTrue(isinstance(obj, services.FooService))
+        self.assertTrue(isinstance(obj.dep1, data.Foo))
+        self.assertEqual(obj.action(), 'Lucy')
+
+    def test_alternate_name_fail(self):
+        c = Container()
+        c.register(services.FooService, 'banana').depends(data.Foo)
+
+        self.assertRaises(AttributeError,
+                          getattr,
+                          c, 'FooService')
+
+        self.assertRaises(KeyError,
+                          c.__getitem__,
+                          'FooService')
+
     def test_multiple(self):
         c = Container()
         c.register(services.FooService).depends(data.Foo)
