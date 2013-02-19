@@ -46,8 +46,8 @@ class Component(object):
 
 class Container(dict):
 
-    def register(self, cls):
-        key = cls.__name__.lower()
+    def register(self, cls, name=None):
+        key = cls.__name__.lower() if name is None else name
         component = Component(cls, container=self)
         self[key] = component
 

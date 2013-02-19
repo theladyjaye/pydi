@@ -14,4 +14,5 @@ __copyright__ = 'Copyright 2012 Adam Venturella'
 
 
 from .container import Container
+from .utils import Resolve
 
